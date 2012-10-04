@@ -1,0 +1,14 @@
+*ReSharper*
+Release/
+bin
+obj
+Thumbs.db
+*.cache
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.userprefs
+logs/
+*.log
+TestResult.xml

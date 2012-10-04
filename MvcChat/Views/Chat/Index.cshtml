@@ -1,0 +1,59 @@
+﻿@model MvcChat.Models.NewMessageModel
+@using MvcChat
+
+@{
+    ViewBag.Title = "MVC Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var chat = new Chat().Init(@(Configuration.Instance.CheckNewMessageTimeout));                
+    });
+</script>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">           
+        </div>
+        <div class="span6">
+            <div class="row-fluid"> 
+                <div><h4>Chat history</h4></div>
+                <div id="msg_history_scroll" class="well scrollable">  
+                    <div id="msg_history"></div>
+                </div>        
+                <div id="chat_errors" class="alert alert-block alert-error fade in" style="display:none;">
+                </div>      
+                <div>                   
+                    @using (Html.BeginForm("Send", "Chat", FormMethod.Post, new { id = "new_msg_form" }))
+                    {
+                        <fieldset>
+                            <p>
+                                @Html.LabelFor(model => model.UserName)  
+                                @Html.TextBoxFor(model => model.UserName, new { style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.UserName)
+                            </p>
+                            <p>
+                                @Html.LabelFor(model => model.Message)
+                                @Html.TextAreaFor(model => model.Message, new { style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.Message)
+                            </p>
+                            <p>
+                                @Html.HiddenFor(model => model.LastCheckedId)
+                                @Html.AntiForgeryToken()
+                            </p>
+                            <div class="btn-toolbar">
+                                <div id="emo_buttons" class="btn-group">                                
+                                </div>
+                            </div>
+                            <p>
+                                <input type="submit" class="btn" value="Send" />
+                            </p>
+                        </fieldset>
+                    }                    
+                </div>
+            </div>
+        </div>
+        <div class="span3">         
+        </div>
+    </div>
+</div>
