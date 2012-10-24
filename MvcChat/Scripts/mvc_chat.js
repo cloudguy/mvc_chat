@@ -8,6 +8,8 @@ function Chat() {
     var chat = {};
 
     chat.LastCheckedMessageId = 0;
+    chat.LoadInitialDataUrl = '';
+    chat.CheckNewMessagesUrl = '';
     
     var emoticons = {
         threaten: { img: '<img src="Content/Smilies/threaten.gif" />', symbol: '>:-(', encoded: /&gt;:-\(/gi },
@@ -25,11 +27,11 @@ function Chat() {
         return msgHtml;
     }
 
-   
+
 
     chat.LoadInitialData = function () {       
         $.ajax({
-            url: '/Chat/LoadInitialData',
+            url: chat.LoadInitialDataUrl,
             type: 'POST',
             success: function (data) {
                 if (data.Messages)
@@ -54,7 +56,9 @@ function Chat() {
         return false;
     }
 
-    chat.Init = function (messageCheckTimeout) {
+    chat.Init = function (messageCheckTimeout, initialDataUrl, checkMessagesUrl) {
+        chat.LoadInitialDataUrl = initialDataUrl;
+        chat.CheckNewMessagesUrl = checkMessagesUrl;
         chat.MessageCheckTimeout = messageCheckTimeout||3000;
         $.ajaxSetup({
             error: function () {
@@ -111,7 +115,7 @@ function Chat() {
 
     chat.CheckNewMessages = function () {
         $.ajax({
-            url: '/Chat/CheckNewMessages',
+            url: chat.CheckNewMessagesUrl,
             type: 'POST',
             data: { lastCheckedId: chat.LastCheckedMessageId },
             success: function (data) {
